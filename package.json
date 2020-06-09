@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/ispyhumanfly/rippletracker/issues"
   },
-  "homepage": "https://github.com/ispyhumanfly/rippletracker#readme"
+  "homepage": "https://github.com/ispyhumanfly/rippletracker#readme",
+  "dependencies": {
+    "coinbase": "^2.0.8",
+    "financejs": "^4.1.0",
+    "typescript": "^3.9.5",
+    "vuejs": "^3.0.1",
+    "vuetify": "^2.2.33"
+  }
 }
