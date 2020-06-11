@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./node_modules/bin/avian --mode development --spa --entrypoint rippletracker --redistHost rippletracker-ro.d9utau.ng.0001.use2.cache.amazonaws.com"
   },
   "repository": {
     "type": "git",
