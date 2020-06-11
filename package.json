@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/ispyhumanfly/rippletracker#readme",
   "dependencies": {
+    "@flypapertech/avian": "^0.6.38",
     "coinbase": "^2.0.8",
     "financejs": "^4.1.0",
+    "pug-plain-loader": "^1.0.0",
     "typescript": "^3.9.5",
     "vuejs": "^3.0.1",
     "vuetify": "^2.2.33"
