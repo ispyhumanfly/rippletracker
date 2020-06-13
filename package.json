@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node node_modules/@flypapertech/avian/dist/avian.cli.js --mode development --entrypoint rippletracker --redisHost rippletracker2.d9utau.0001.use2.cache.amazonaws.com"
+    "start": "node node_modules/@flypapertech/avian/dist/avian.cli.js --mode development --entrypoint rippletracker"
   },
   "repository": {
     "type": "git",
