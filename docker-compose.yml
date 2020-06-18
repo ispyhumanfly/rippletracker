@@ -1,0 +1,22 @@
+version: "3"
+volumes:
+    node_modules:
+    public:
+    private:
+services:
+    app:
+        build:
+            context: .
+        image: rippletracker:latest
+        ports:
+            - "5000:5000"
+        volumes:
+            - .:/rippletracker
+            - node_modules:/rippletracker/node_modules/
+            - public:/rippletracker/public
+            - private:/rippletracker/private
+        depends_on:
+            - cache
+    cache:
+        image: redis:alpine
+
