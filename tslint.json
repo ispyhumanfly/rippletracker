@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json.schemastore.org/tslint",
+    "rules": {
+        "strict-boolean-expressions": [
+            true,
+            "allow-string",
+            "allow-boolean-or-undefined",
+            "allow-null-union",
+            "allow-undefined-union",
+            "allow-mix",
+            "ignore-rhs"
+        ]
+    }
+}

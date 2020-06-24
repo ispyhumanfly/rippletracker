@@ -1,0 +1,13 @@
+node_modules
+public
+private
+.vscode
+.vagrant
+mobile
+platforms
+hooks
+serverless
+package-lock.json
+**/*.mobile.*
+.git
+.env
