@@ -1,0 +1,35 @@
+#index(v-cloak)
+    // Introduction & Sign In
+    section
+        v-parallax(src="/assets/images/hudsons.jpg" height="600")
+            v-layout.white--text(column align-center justify-center)
+                img(src="/assets/images/FlyPaper-Logo.png" alt="FlyPaper Logo" height="200")
+
+                #applications(v-if="user && user.id" style="display: inline-block;")
+                    v-btn.secondary.mt-12.btn.btn-outline(filled large to="/dailies")
+                        | Daily &nbsp;
+                        v-icon icon-flypaper-daily-filled
+                #applications(v-else style="display: inline-block;")
+                    v-btn.secondary.mt-12.btn.btn-outline(filled large to="/auth")
+                        | Sign In &nbsp;
+                        v-icon mdi-account-circle
+
+    // About Protest
+    section
+        v-layout.my-12(column wrap align-center)
+            v-flex.my-4.text-center.h2.headline(xs12 sm4) A fresh approach to the collaboration and management of commercial construction projects.
+            span.subheading Easy to use Dailies
+
+            v-flex(xs12)
+                v-container(grid-list-xl)
+                    v-layout(wrap align-center)
+                        v-flex(xs12 md4)
+                            v-card.elevation-0.transparent
+                                v-card-text.text-center
+                                    v-icon(x-large) icon-flypaper-daily-filled
+                                    v-card-title.layout.justify-center.headline.text-center(primary-title) Dailies
+                                    v-card-text Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat tincidunt ornare. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam in aliquet odio. Aliquam eu est vitae tellus bibendum tincidunt. Suspendisse potenti.
+    // Inquiries Form
+    section
+        v-parallax
+            #game

@@ -1,0 +1,142 @@
+doctype html
+html(lang="en")
+    head
+        title FlyPaper Technologies
+        meta(name="description" content="FlyPaper Technologies construction management application")
+        meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes")
+        link(rel="icon" href="/favicon.ico")
+
+        block style
+            style
+                include:less rippletracker.style.less
+    body
+        v-app#protest(v-cloak)
+            Snacks
+            set-company(v-if="!isEmbedded && !isPrinting", :value="$store.getters.showSetCompany")
+            set-company(v-model="showSetCompany")
+            set-project(v-if="!isEmbedded && !isPrinting", :value="$store.getters.showSetProject")
+            set-project(v-model="showSetProject")
+
+            // Navigation
+            v-navigation-drawer(v-model="showNavigationDrawer" v-if="user && !isEmbedded && !isPrinting" app temporary)
+                v-list
+                    // Profile
+
+                    v-list-item(@click="(showProfile = true)")
+                        v-avatar(small size="36")
+                            v-img(:src="userPicture(user.id, allUsers)")
+                        v-list-item-content
+                            v-list-item-title.pl-2 {{ user.data.name }}
+                        v-list-item-action
+                            v-icon(small) mdi-pencil
+                        Profile(v-model="showProfile")
+
+                    // Company
+                    v-list-item(@click="(showSetCompany = true)")
+                        v-icon(float-left) mdi-domain
+                        v-list-item-content
+                            v-list-item-title.pl-2 {{ $store.getters.currentCompanyName }}
+                        v-list-item-action
+                            v-icon(small) mdi-pencil
+
+                    // Project
+                    v-list-item(@click="(showSetProject = true)")
+                        v-icon(float-left) mdi-map-marker
+                        v-list-item-content
+                            v-list-item-title.pl-2 {{ $store.getters.currentProjectName }}
+                        v-list-item-action
+                            v-icon(small) mdi-pencil
+
+                // Applications
+                v-list(v-for="(section) in webNavigation", :key="section[0]" v-if="section[1].length > 0")
+                    h4.text-left.text-uppercase.font-weight-thin.font-italic.pa-1.ml-1 {{ section[0] }}
+
+                    v-divider
+
+                    v-list-item(v-for="(item, index) in section[1]", :key="index" @click="", :to="item.href")
+                        v-icon(float-left) {{ item.icon }}
+                        v-list-item-title.pl-2 {{ item.name }}
+                v-list
+                    v-list-item(@click="signout")
+                        v-icon(float-left) mdi-power
+                        v-list-item-title.pl-2 Sign Out
+
+            // Protest App Bar
+            v-app-bar.primary(v-if="!isEmbedded && !isPrinting", :dark="dark" app, :fixed="false")
+                v-app-bar-nav-icon(v-if="user" @click.stop="(showNavigationDrawer = !showNavigationDrawer)" aria-label="Open menu")
+                    v-icon mdi-menu
+
+                v-toolbar-title.protest-logo {{ 'FlyPaper ' + pageName }}
+
+                v-spacer
+
+                v-btn(v-if="user" @click="(showSetProject = true)" text)
+                    v-icon mdi-map-marker
+                    | &nbsp; {{ $store.getters.currentProjectName }}
+
+                // Feedback Submit
+                v-tooltip(v-if="user" bottom)
+                    template(v-slot:activator="{ on }")
+                        v-btn(v-on="on" icon @click="(showSubmitFeedback = true)" aria-label="Submit feedback")
+                            v-icon mdi-message-alert
+
+                    span Send feedback, bug reports and feature requests to the FlyPaper development team.
+
+                feedback-submit(v-if="user" v-model="showSubmitFeedback")
+
+                // ToDOs
+                Todos(v-if="user")
+
+                // Sign Out
+
+                v-tooltip(bottom v-if="user")
+                    template(v-slot:activator="{ on }")
+                        v-btn(
+                            v-on="on"
+                            icon
+                            @click="$store.commit('setDarkMode', !$store.state.darkMode)",
+                            :aria-label="$store.state.darkMode ? 'Use light mode' : 'Use dark mode'"
+                        )
+                            v-icon {{ $store.state.darkMode ? 'mdi-white-balance-sunny' : 'mdi-weather-night' }}
+
+                    span Toggle dark mode
+
+            v-banner(v-if="isUserProtestAdmin" dark app color="warning", :sticky="true" single-line) You are a Protest Admin. With great power comes great responsibility.
+                template(v-slot:icon)
+                    v-icon mdi-alert
+                template(v-slot:actions)
+                    v-btn(@click="signout" outlined) Switch
+            v-banner(v-if="isUserImpersonator" dark app color="warning", :sticky="true" single-line) You are impersonating {{ user.data.name }}
+                template(v-slot:icon)
+                    v-icon mdi-alien
+                template(v-slot:actions)
+                    v-btn(@click="signout" outlined) Switch
+            v-content
+                router-view
+
+        block component
+            case argv.mode
+                when "development"
+                    script(src="/node_modules/axios/dist/axios.js")
+                    script(src="/node_modules/vue/dist/vue.js")
+                    script(src="/node_modules/luxon/build/global/luxon.js")
+
+                when "production"
+                    script(src="/node_modules/axios/dist/axios.min.js")
+                    script(src="/node_modules/vue/dist/vue.min.js")
+                    script(src="/node_modules/luxon/build/global/luxon.min.js")
+
+            script(src="/protest.client.bundle.js")
+            script(
+                src="https://browser.sentry-cdn.com/5.17.0/bundle.min.js"
+                integrity="sha384-y+an4eARFKvjzOivf/Z7JtMJhaN6b+lLQ5oFbBbUwZNNVir39cYtkjW1r6Xjbxg3"
+                crossorigin="anonymous"
+            )
+            script.
+                Sentry.init(
+                    {
+                        dsn: "https://f9ec55bf44fd4ce19ca2d0bd7bc9dfc7@sentry.io/2600800",
+                        integrations: [new Sentry.Integrations.Vue({Vue, attachProps: true, logErrors: true })],
+                        release: "flypaper@0.13.11"
+                    }
+                )
